@@ -25,6 +25,7 @@ import static net.minecrell.serverlistplus.core.logging.JavaServerListPlusLogger
 import com.google.common.base.Optional;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilderSpec;
+import de.myzelyam.api.vanish.BungeeVanishAPI;
 import net.md_5.bungee.api.AbstractReconnectHandler;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -312,12 +313,14 @@ public class BungeePlugin extends BungeePluginBase implements ServerListPlusPlug
         return server != null ? getRandomPlayers(server.getPlayers()) : null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private static Iterator<String> getRandomPlayers(Collection<ProxiedPlayer> players) {
         if (Helper.isNullOrEmpty(players)) return null;
 
         List<String> result = new ArrayList<>(players.size());
 
         for (ProxiedPlayer player : players) {
+            if(BungeeVanishAPI.isInvisible(player)) continue;
             result.add(player.getName());
         }
 
